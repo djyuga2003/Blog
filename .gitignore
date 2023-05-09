@@ -164,3 +164,4 @@ blog-env/
 
 .idea/
 /blog/blog.db
+.idea
