@@ -1,12 +1,10 @@
-from pathlib import Path
-
-import uvicorn
-from fastapi import FastAPI, Depends, status, Response, HTTPException
-from sqlalchemy.orm import Session
-
 import blog.models as models
 import blog.schemas as schemas
+import uvicorn
 from blog.database import engine, SessionLocal
+from fastapi import FastAPI, Depends, status, Response, HTTPException
+from pathlib import Path
+from sqlalchemy.orm import Session
 
 app = FastAPI()
 
@@ -44,9 +42,10 @@ def update(book_id, request: schemas.Blog, db: Session = Depends(get_db)):
     print(book_id)
     print(request)
     blog: models.Blog = db.query(models.Blog).filter(models.Blog.id == book_id).first()
-    blog.title = request.title
-    blog.body = request.body
-    db.commit()
+    if blog is not None:
+        blog.title = request.title
+        blog.body = request.body
+        db.commit()
 
     return 'updated'
 
